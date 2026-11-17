@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from flask import Blueprint, render_template
+# from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import func
 from ..extensions import db
@@ -8,9 +9,13 @@ from ..models import User, Product, Category, Supplier, Customer, Sale, Purchase
 
 main_bp = Blueprint('main', __name__)
 
+# @main_bp.get('/')
+# def index():
+#     return render_template('index.html')
+
 @main_bp.get('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('main.dashboard'))
 
 @main_bp.get('/dashboard')
 @login_required
