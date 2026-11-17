@@ -1,4 +1,4 @@
-# Phase 6 — Deploy StockFlow on Vercel + Supabase (November 2026)
+# Deploy StockFlow on Vercel + Supabase (November 2026)
 
 This package is based on the **Phase 5 ZIP**, not a new application. It keeps the
 Phase 5 routes, templates, sidebar, login, chart assets, and business logic.
