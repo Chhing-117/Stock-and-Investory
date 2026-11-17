@@ -17,5 +17,32 @@ a{text-decoration:none}.eyebrow{color:var(--sf-purple);font-size:.77rem;letter-s
  .card {box-shadow:none!important;border:1px solid #ddd!important;break-inside:avoid;}
  .chart-space {max-height:220px;} }
 
+/* Hide vertical scrollbar but keep scrolling working */
 
+/* Chrome, Edge, and Safari */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.sidebar-scroll::-webkit-scrollbar,
+.app-main::-webkit-scrollbar {
+    display: none;
+}
+
+/* Firefox */
+html,
+body,
+.sidebar-scroll,
+.app-main {
+    scrollbar-width: none;
+}
+
+/* Keep vertical scrolling enabled */
+html,
+body {
+    overflow-y: auto;
+}
+
+.sidebar-scroll,
+ .app-main {
+    overflow-y: auto;
+}
 
