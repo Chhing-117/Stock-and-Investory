@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · StockFlow{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"><div><h2>{{ title }}</h2><p class="text-muted">Record a transaction and update stock automatically.</p></div><a href="{{ url_for('transactions.purchases' if kind=='purchase' else 'transactions.sales') }}" class="btn btn-outline-secondary">Back</a></div>
+<form method="post" id="transactionForm" class="card p-4 shadow-sm" autocomplete="off">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% if kind=='purchase' %}
+<label for="supplier_id" class="form-label">Supplier</label><select class="form-select mb-3" name="supplier_id" id="supplier_id" required><option value="">Choose supplier</option>{% for s in suppliers %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select>
+{% else %}
+<label for="customer_id" class="form-label">Customer (optional)</label><select class="form-select mb-3" name="customer_id" id="customer_id"><option value="0">Walk-in customer</option>{% for c in customers %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+{% endif %}
+<h5>Line items</h5><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Product</th><th style="width:130px">Quantity</th>{% if kind=='purchase' %}<th style="width:150px">Unit cost (USD)</th>{% else %}<th>Current price</th>{% endif %}<th style="width:100px">Remove</th></tr></thead><tbody id="lines"></tbody></table></div>
+<button class="btn btn-outline-primary align-self-start mb-3" type="button" id="addLine"><i class="bi bi-plus-circle"></i> Add product</button>
+{% if kind=='sale' %}
+<div class="row g-3"><div class="col-md-4"><label class="form-label">Discount (USD)</label><input type="number" class="form-control" name="discount" value="0" min="0" step="0.01" required></div><div class="col-md-4"><label class="form-label">Tax rate (%)</label><input type="number" class="form-control" name="tax_rate" value="0" min="0" max="100" step="0.01" required></div><div class="col-md-4"><label class="form-label">Payment method</label><select class="form-select" name="payment_method" required><option value="cash">Cash</option><option value="bank_transfer">Bank transfer</option><option value="khqr">KHQR (record only)</option></select></div><div class="col-md-6"><label class="form-label">Payment status</label><select class="form-select" name="payment_status"><option value="recorded">Recorded (unverified)</option><option value="pending">Pending</option><option value="paid">Paid (manually verified)</option></select></div><div class="col-md-6"><label class="form-label">Payment reference (optional)</label><input class="form-control" name="payment_reference" maxlength="120"></div></div>
+<p class="small text-muted mt-3">Prices are taken from the product database when submitted. KHQR is not connected to a payment gateway.</p>
+{% endif %}
+<button class="btn btn-primary mt-4" type="submit">{{ 'Confirm purchase' if kind=='purchase' else 'Complete sale' }}</button></form>
+<template id="lineTemplate"><tr><td><select name="product_id[]" class="form-select" required><option value="">Choose a product</option>{% for p in products %}<option value="{{ p.id }}">{{ p.name }} ({{ p.sku }}) — stock {{ p.stock_quantity }}{% if kind=='sale' %} — ${{ '%.2f'|format(p.selling_price) }}{% endif %}</option>{% endfor %}</select></td><td><input type="number" name="quantity[]" min="1" max="100000000" value="1" required class="form-control"></td>{% if kind=='purchase' %}<td><input type="number" name="unit_cost[]" min="0" step="0.01" required value="0" class="form-control"></td>{% else %}<td class="text-muted small">Current product price</td>{% endif %}<td><button class="btn btn-outline-danger btn-sm remove-line" type="button">Remove</button></td></tr></template>
+<script>document.addEventListener('DOMContentLoaded',()=>{let t=document.getElementById('lineTemplate'),b=document.getElementById('lines');function add(){b.appendChild(t.content.cloneNode(true))}document.getElementById('addLine').addEventListener('click',add);b.addEventListener('click',e=>{if(e.target.closest('.remove-line')&&b.rows.length>1)e.target.closest('tr').remove()});add()})</script>
+{% endblock %}

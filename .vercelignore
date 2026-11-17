@@ -1,0 +1,13 @@
+# Files not needed by serverless Flask runtime
+.env
+.env.*
+!.env.example
+.venv/
+instance/
+migrations/
+tests/
+__pycache__/
+.pytest_cache/
+*.db
+*.sqlite
+*.sqlite3

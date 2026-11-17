@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Login — StockFlow{% endblock %}
+{% block public_content %}
+<section class="login-layout" aria-label="Sign in to StockFlow">
+  <div class="login-intro d-none d-lg-flex">
+    <div class="intro-pill"><i class="bi bi-stars"></i> Built for better business</div>
+    <div class="login-intro-copy"><div class="intro-icon"><i class="bi bi-boxes"></i></div><h1>Everything in stock.<br>Everything in sync.</h1><p>A simple place for your team to organize products, suppliers, customers, and everyday inventory tasks.</p></div>
+    <div class="intro-foot"><i class="bi bi-shield-check"></i> Secure team access</div>
+  </div>
+  <div class="login-form-area">
+    <div class="login-form-panel">
+      <div class="login-mobile-icon d-lg-none"><i class="bi bi-box-seam"></i></div>
+      <div class="eyebrow mb-2">WELCOME TO STOCKFLOW</div>
+      <h2 class="login-heading">Welcome back</h2>
+      <p class="text-secondary mb-4">Sign in to manage your inventory.</p>
+      <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="mb-3"><label for="{{ form.username.id }}" class="form-label fw-semibold">Username</label><div class="input-icon-wrap"><i class="bi bi-person"></i>{{ form.username(class_='form-control login-input', autocomplete='username', placeholder='Enter your username', autofocus=true) }}</div>{% for error in form.username.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}</div>
+        <div class="mb-4"><label for="{{ form.password.id }}" class="form-label fw-semibold">Password</label><div class="input-icon-wrap"><i class="bi bi-lock"></i>{{ form.password(class_='form-control login-input login-password-input', autocomplete='current-password', placeholder='Enter your password') }}<button type="button" class="password-toggle" data-password-toggle="{{ form.password.id }}" aria-label="Show password" aria-pressed="false"><i class="bi bi-eye"></i></button></div>{% for error in form.password.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}</div>
+        {{ form.submit(class_='btn btn-primary btn-lg w-100 login-submit') }}
+      </form>
+      <div class="login-help"><i class="bi bi-info-circle"></i> Need an account? Contact your administrator.</div>
+    </div>
+  </div>
+</section>
+{% endblock %}
