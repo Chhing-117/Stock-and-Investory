@@ -112,12 +112,9 @@
 
             {{ form.password(
                 class_='form-control login-input login-password-input',
-                autocomplete='current-password',
+                autocomplete='off',
                 placeholder='Enter your password',
-                value=(
-                    'admin123'
-                    
-                )
+
             ) }}
 
             <button
@@ -157,5 +154,22 @@
   </div>
 
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const usernameInput = document.getElementById("{{ form.username.id }}");
+    const passwordInput = document.getElementById("{{ form.password.id }}");
+
+    // Prefill demo login credentials.
+    // Both fields remain editable.
+    if (usernameInput && !usernameInput.value) {
+        usernameInput.value = "admin";
+    }
+
+    if (passwordInput && !passwordInput.value) {
+        passwordInput.value = "Admin@12345";
+    }
+});
+</script>
 
 {% endblock %}
+
